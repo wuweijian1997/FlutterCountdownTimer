@@ -4,7 +4,7 @@ A simple flutter countdown timer component.
 ```
 Countdown(endTime: 1576839556732); // timestamp
 ```
-![./example_2.png](https://github.com/wuweijian1997/FlutterCountdownTimer/blob/master/example_0.jpg)
+![./example_2.png](https://github.com/wuweijian1997/FlutterCountdownTimer/blob/master/example_2.jpg)
 
 example 02
 ```
@@ -28,7 +28,7 @@ Countdown(
     secSymbolTextStyle: TextStyle(fontSize: 55, color: Colors.deepOrange),
 ),
 ```
-![/example_0.png](/example_0.png)
+![/example_0.png](https://github.com/wuweijian1997/FlutterCountdownTimer/blob/master/example_0.jpg)
 
-![example_1.png](/example_1.png)
+![example_1.png](https://github.com/wuweijian1997/FlutterCountdownTimer/blob/master/example_1.jpg)
 

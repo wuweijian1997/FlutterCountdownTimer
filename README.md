@@ -4,7 +4,7 @@ A simple flutter countdown timer component.
 ```
 Countdown(endTime: 1576839556732); // timestamp
 ```
-![./example_2.png](/example_2.png)
+![./example_2.png](https://github.com/wuweijian1997/FlutterCountdownTimer/blob/master/example_0.jpg)
 
 example 02
 ```

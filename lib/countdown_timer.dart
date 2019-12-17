@@ -5,7 +5,7 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 
 /// A Countdown.
-class Countdown extends StatefulWidget {
+class CountdownTimer extends StatefulWidget {
   final int endTime;
   final String defaultDays;
   final String defaultHours;
@@ -25,7 +25,7 @@ class Countdown extends StatefulWidget {
   final TextStyle minSymbolTextStyle;
   final TextStyle secSymbolTextStyle;
 
-  Countdown({
+  CountdownTimer({
     this.endTime,
     this.defaultDays = "--",
     this.defaultHours = "--",
@@ -50,7 +50,7 @@ class Countdown extends StatefulWidget {
   _CountDownState createState() => _CountDownState();
 }
 
-class _CountDownState extends State<Countdown> {
+class _CountDownState extends State<CountdownTimer> {
   DiffDate diffDate;
   Timer _diffTimer;
   final defaultTextStyle = TextStyle(fontSize: 20);
@@ -119,7 +119,7 @@ class _CountDownState extends State<Countdown> {
   }
 
   @override
-  void didUpdateWidget(Countdown oldWidget) {
+  void didUpdateWidget(CountdownTimer oldWidget) {
     if (oldWidget.endTime != widget.endTime) {
       timerDiffDate();
     }

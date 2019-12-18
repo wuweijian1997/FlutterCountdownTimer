@@ -19,6 +19,11 @@ import 'package:flutter_countdown_timer/countdown_timer.dart';
 
 
   CountdownTimer(endTime: 1594829147719),
+  CountdownTimer(endTime: 1576682634231, 
+    onEnd: (){
+    print("Game Over");
+    },
+  ),
   CountdownTimer(
     endTime: 1594829147719,
     textStyle: TextStyle(fontSize: 30, color: Colors.orange),
@@ -48,6 +53,9 @@ import 'package:flutter_countdown_timer/countdown_timer.dart';
     secSymbolTextStyle:
         TextStyle(fontSize: 55, color: Colors.deepOrange),
 ```
+
+onEnd => End of time trigger
+
 example 01
 ```
 Countdown(endTime: 1576839556732); // timestamp

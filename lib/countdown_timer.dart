@@ -1,7 +1,6 @@
 library flutter_package;
 
 import 'dart:async';
-
 import 'package:flutter/widgets.dart';
 
 /// A Countdown.
@@ -24,6 +23,7 @@ class CountdownTimer extends StatefulWidget {
   final TextStyle hoursSymbolTextStyle;
   final TextStyle minSymbolTextStyle;
   final TextStyle secSymbolTextStyle;
+  final void Function() onEnd;
 
   CountdownTimer({
     this.endTime,
@@ -44,6 +44,7 @@ class CountdownTimer extends StatefulWidget {
     this.hoursSymbolTextStyle,
     this.minSymbolTextStyle,
     this.secSymbolTextStyle,
+    this.onEnd,
   });
 
   @override
@@ -57,22 +58,36 @@ class _CountDownState extends State<CountdownTimer> {
 
   DiffDate getDateData() {
     if (widget.endTime == null) return null;
-    var diff = (widget.endTime - DateTime.now().millisecondsSinceEpoch) / 1000;
-    if (diff <= 0) {
+    int diff = ((widget.endTime - DateTime
+        .now()
+        .millisecondsSinceEpoch) / 1000).floor();
+    if (diff < 0) {
       return null;
     }
-    int days, hours, min, sec = 0;
+    int days,
+        hours,
+        min,
+        sec = 0;
     if (diff >= 86400) {
       days = (diff / 86400).floor();
       diff -= days * 86400;
+    } else {
+      // if days = -1 => Don't show;
+      days = -1;
     }
     if (diff >= 3600) {
       hours = (diff / 3600).floor();
       diff -= hours * 3600;
+    } else {
+//      hours = days == -1 ? -1 : 0;
+      hours = 0;
     }
     if (diff >= 60) {
       min = (diff / 60).floor();
       diff -= min * 60;
+    } else {
+//      min = hours == -1 ? -1 : 0;
+      min = 0;
     }
     sec = diff.toInt();
     return DiffDate(days: days, hours: hours, min: min, sec: sec);
@@ -93,6 +108,7 @@ class _CountDownState extends State<CountdownTimer> {
     } else {
       return null;
     }
+    disposeDiffTimer();
     const period = const Duration(seconds: 1);
     _diffTimer = Timer.periodic(period, (timer) {
       //到时回调
@@ -101,6 +117,7 @@ class _CountDownState extends State<CountdownTimer> {
         setState(() {
           diffDate = data;
         });
+        checkDateEnd(data);
       } else {
         disposeDiffTimer();
       }
@@ -129,45 +146,81 @@ class _CountDownState extends State<CountdownTimer> {
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: <Widget>[
-        Text(
-          '${diffDate?.days ?? widget.defaultDays}',
-          style: _getTextStyle(widget.daysTextStyle),
-        ),
-        Text(
-          widget.daysSymbol,
-          style: _getTextStyle(widget.daysSymbolTextStyle),
-        ),
-        Text(
-          '${diffDate?.hours ?? widget.defaultHours}',
-          style: _getTextStyle(widget.hoursTextStyle),
-        ),
-        Text(
-          widget.hoursSymbol,
-          style: _getTextStyle(widget.hoursSymbolTextStyle),
-        ),
-        Text(
-          '${diffDate?.min ?? widget.defaultMin}',
-          style: _getTextStyle(widget.minTextStyle),
-        ),
-        Text(
-          widget.minSymbol,
-          style: _getTextStyle(widget.minSymbolTextStyle),
-        ),
-        Text(
-          '${diffDate?.sec ?? widget.defaultSec}',
-          style: _getTextStyle(widget.secTextStyle),
-        ),
-        Text(
-          widget.secSymbol,
-          style: _getTextStyle(widget.secSymbolTextStyle),
-        ),
-      ],
+      children: _items(),
     );
   }
 
   _getTextStyle(textStyle) {
     return textStyle ?? widget.textStyle ?? defaultTextStyle;
+  }
+
+  _items() {
+    List<Widget> list = [];
+    if (diffDate == null) {
+      return list;
+    }
+    if (diffDate.days != -1) {
+      var days = _getNumberAddZero(diffDate.days);
+      list.add(Text(
+        '${days ?? widget.defaultDays}',
+        style: _getTextStyle(widget.daysTextStyle),
+      ));
+      list.add(Text(
+        widget.daysSymbol,
+        style: _getTextStyle(widget.daysSymbolTextStyle),
+      ));
+    }
+    if (diffDate.hours != -1) {
+      var hours = _getNumberAddZero(diffDate.hours);
+      list.add(Text(
+        '${hours ?? widget.defaultHours}',
+        style: _getTextStyle(widget.hoursTextStyle),
+      ));
+      list.add(Text(
+        widget.hoursSymbol,
+        style: _getTextStyle(widget.hoursSymbolTextStyle),
+      ));
+    }
+    if (diffDate.min != -1) {
+      var min = _getNumberAddZero(diffDate.min);
+      list.add(Text(
+        '${min ?? widget.defaultMin}',
+        style: _getTextStyle(widget.minTextStyle),
+      ));
+      list.add(Text(
+        widget.minSymbol,
+        style: _getTextStyle(widget.minSymbolTextStyle),
+      ));
+    }
+    if (diffDate.sec != -1) {
+      var sec = _getNumberAddZero(diffDate.sec);
+      list.add(Text(
+        '${sec ?? widget.defaultSec}',
+        style: _getTextStyle(widget.secTextStyle),
+      ));
+      list.add(Text(
+        widget.secSymbol,
+        style: _getTextStyle(widget.secSymbolTextStyle),
+      ));
+    }
+    return list;
+  }
+
+  String _getNumberAddZero(int number) {
+    if (number == null) {
+      return null;
+    }
+    if (number < 10) {
+      return "0" + number.toString();
+    }
+    return number.toString();
+  }
+
+  void checkDateEnd(DiffDate data) {
+    if(data.days == -1 && data.hours == 0 && data.min == 0 && data.sec == 0) {
+      widget.onEnd();
+      disposeDiffTimer();
+    }
   }
 }
 
@@ -176,5 +229,6 @@ class DiffDate {
   final int hours;
   final int min;
   final int sec;
+
   DiffDate({this.days, this.hours, this.min, this.sec});
 }

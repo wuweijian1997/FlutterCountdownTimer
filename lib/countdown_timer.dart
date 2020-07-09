@@ -146,6 +146,8 @@ class _CountDownState extends State<CountdownTimer> {
   @override
   Widget build(BuildContext context) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: _items(),
     );
   }

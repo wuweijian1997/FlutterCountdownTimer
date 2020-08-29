@@ -6,3 +6,8 @@
 
 - fix zero not to display
 - add onEnd function
+
+## [1.2.0] -
+
+- feat: emptyWidget
+- docs: update demo code

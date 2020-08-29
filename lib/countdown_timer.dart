@@ -1,6 +1,7 @@
 library flutter_package;
 
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 
 /// A Countdown.
@@ -24,8 +25,11 @@ class CountdownTimer extends StatefulWidget {
   final TextStyle minSymbolTextStyle;
   final TextStyle secSymbolTextStyle;
   final void Function() onEnd;
+  final Widget emptyWidget;
+  static final Widget _defaultEmptyWidget = const Center(child: Text('The current time has expired'),);
 
   CountdownTimer({
+    Key key,
     this.endTime,
     this.defaultDays = "--",
     this.defaultHours = "--",
@@ -45,8 +49,8 @@ class CountdownTimer extends StatefulWidget {
     this.minSymbolTextStyle,
     this.secSymbolTextStyle,
     this.onEnd,
-  });
-
+    emptyWidget,
+  }) : this.emptyWidget = emptyWidget ?? _defaultEmptyWidget, super(key: key);
   @override
   _CountDownState createState() => _CountDownState();
 }
@@ -146,6 +150,8 @@ class _CountDownState extends State<CountdownTimer> {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: _items(),
     );
   }
@@ -157,6 +163,7 @@ class _CountDownState extends State<CountdownTimer> {
   _items() {
     List<Widget> list = [];
     if (diffDate == null) {
+      list.add(widget.emptyWidget);
       return list;
     }
     if (diffDate.days != -1) {

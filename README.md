@@ -11,21 +11,48 @@ Install it
 ```yaml
 $ flutter pub get
 ```
+##
+| name                       | description                                                                                                                                                            |
+| ------------------------- | ------------------------------------------------------------- |
+| endTime                   | Countdown end time stamp                                      |
+| onEnd                     | Countdown end event                                           |
+| emptyWidget               | The widget displayed at the end of the countdown              |
+| defaultDays               | String defaultDays                                            |
+| defaultHours              | String defaultHours                                           |
+| defaultMin                | String defaultMin                                             |
+| defaultSec                | final String defaultSec                                       |
+| daysSymbol                | final String daysSymbol                                       |
+| hoursSymbol               | final String hoursSymbol                                      |
+| minSymbol                 | final String minSymbol                                        |
+| secSymbol                 | final String secSymbol                                        |
+| textStyle                 | final TextStyle textStyle                                     |
+| daysTextStyle             | final TextStyle daysTextStyle                                 |
+| hoursTextStyle            | final TextStyle hoursTextStyle                                |
+| minTextStyle              | final TextStyle minTextStyle                                  |
+| secTextStyle              | final TextStyle secTextStyle                                  |
+| daysSymbolTextStyle       | final TextStyle daysSymbolTextStyle                           |
+| hoursSymbolTextStyle      | final TextStyle hoursSymbolTextStyle                          |
+| minSymbolTextStyle        | final TextStyle minSymbolTextStyle                            |
+| secSymbolTextStyle        | final TextStyle secSymbolTextStyle                            |
+
 
 ## Example
 Now in your Dart code, you can use:
 ```dart
 import 'package:flutter_countdown_timer/countdown_timer.dart';
 
-
-  CountdownTimer(endTime: 1594829147719),
-  CountdownTimer(endTime: 1576682634231, 
+  ...
+  int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 60 * 60;
+  ...
+  
+  CountdownTimer(endTime: endTime),
+  CountdownTimer(endTime: endTime,
     onEnd: (){
     print("Game Over");
     },
   ),
   CountdownTimer(
-    endTime: 1594829147719,
+    endTime: endTime,
     textStyle: TextStyle(fontSize: 30, color: Colors.orange),
   ),
   CountdownTimer(
@@ -58,14 +85,14 @@ onEnd => End of time trigger
 
 example 01
 ```
-Countdown(endTime: 1576839556732); // timestamp
+Countdown(endTime: DateTime.now().millisecondsSinceEpoch + 1000 * 60 * 60); // timestamp
 ```
 ![./example_2.png](https://github.com/wuweijian1997/FlutterCountdownTimer/blob/master/example_2.jpg)
 
 example 02
 ```
 Countdown(
-    endTime: endTime,
+    endTime: DateTime.now().millisecondsSinceEpoch + 1000 * 60 * 60,
     defaultDays: "==",
     defaultHours: "--",
     defaultMin: "**",

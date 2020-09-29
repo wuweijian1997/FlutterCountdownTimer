@@ -11,3 +11,9 @@
 
 - feat: emptyWidget
 - docs: update demo code
+
+## [1.3.0] - 2020/9/29 21:35
+
+- feat: widgetBuilder
+- feat: example demo
+

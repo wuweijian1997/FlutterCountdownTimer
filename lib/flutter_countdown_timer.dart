@@ -93,7 +93,6 @@ class _CountDownState extends State<CountdownTimer> {
 
   timeListBuild(CurrentRemainingTime time) {
     List<Widget> list = [];
-    print('time: $time');
     if (time == null) {
       list.add(emptyWidget);
       return list;

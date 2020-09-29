@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_countdown_timer/countdown_timer.dart';
+import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 
 void main() {
   runApp(MyApp());
@@ -31,7 +31,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 30;
+    int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 60;
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

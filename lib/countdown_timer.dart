@@ -93,6 +93,7 @@ class _CountDownState extends State<CountdownTimer> {
 
   timeListBuild(CurrentRemainingTime time) {
     List<Widget> list = [];
+    print('time: $time');
     if (time == null || time.isEnd) {
       list.add(emptyWidget);
       return list;
@@ -125,7 +126,7 @@ class _CountDownState extends State<CountdownTimer> {
   }
 
   void checkDateEnd(CurrentRemainingTime data) {
-    if (data.isEnd) {
+    if (data == null || data.isEnd) {
       onEnd?.call();
       disposeDiffTimer();
     }
@@ -157,24 +158,22 @@ class _CountDownState extends State<CountdownTimer> {
 
   timerDiffDate() {
     CurrentRemainingTime data = getDateData();
-    if (data != null) {
-      setState(() {
-        currentRemainingTime = data;
-      });
-    } else {
+    setState(() {
+      currentRemainingTime = data;
+    });
+    disposeDiffTimer();
+    if (data == null) {
       return null;
     }
-    disposeDiffTimer();
     const period = const Duration(seconds: 1);
     _diffTimer = Timer.periodic(period, (timer) {
       //到时回调
       CurrentRemainingTime data = getDateData();
-      if (data != null) {
-        setState(() {
-          currentRemainingTime = data;
-        });
-        checkDateEnd(data);
-      } else {
+      setState(() {
+        currentRemainingTime = data;
+      });
+      checkDateEnd(data);
+      if (data == null) {
         disposeDiffTimer();
       }
     });

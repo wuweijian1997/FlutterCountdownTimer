@@ -31,13 +31,16 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 60 * 60;
+    int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 30;
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           CountdownTimer(
             endTime: endTime,
+            onEnd: () {
+              print('onEnd');
+            },
           ),
           CountdownTimer(
             endTime: endTime,
@@ -46,6 +49,9 @@ class _MyHomePageState extends State<MyHomePage> {
           CountdownTimer(
             endTime: endTime,
             widgetBuilder: (_, CurrentRemainingTime time) {
+              if(time == null) {
+                return Text('Game over');
+              }
               return Text(
                   'days: [ ${time.days} ], hours: [ ${time.hours} ], min: [ ${time.min} ], sec: [ ${time.sec} ]');
             },
@@ -53,6 +59,9 @@ class _MyHomePageState extends State<MyHomePage> {
           CountdownTimer(
             endTime: endTime,
             widgetBuilder: (BuildContext context, CurrentRemainingTime time) {
+              if(time == null) {
+                return Text('Game over');
+              }
               List<Widget> list = [];
               if(time.days != null) {
                 list.add(Row(

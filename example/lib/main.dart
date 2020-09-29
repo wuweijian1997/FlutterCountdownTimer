@@ -1,34 +1,35 @@
-## CountdownTimer
-A simple flutter countdown timer component.
+import 'package:flutter/material.dart';
+import 'package:flutter_countdown_timer/countdown_timer.dart';
 
-## Installing
-Add this to your package's pubspec.yaml file:
-```yaml
-dependencies:
-  flutter_countdown_timer: ^1.2.0
-```
-Install it
-```yaml
-$ flutter pub get
-```
-##
-| name                      | description                                                                                                                                                            |
-| ------------------------- | ----------------------------------------------------------------- |
-| endTime                   | Countdown end time stamp                                          |
-| onEnd                     | Countdown end event                                               |
-| emptyWidget               | The widget displayed at the end of the countdown                  |
-| daysSymbol                | final Widget daysSymbol                                           |
-| hoursSymbol               | final Widget hoursSymbol                                          |
-| minSymbol                 | final Widget minSymbol                                            |
-| secSymbol                 | final Widget secSymbol                                            |
-| textStyle                 | final TextStyle textStyle                                         |
-| widgetBuilder             | Widget Function(BuildContext context, CurrentRemainingTime time)  |
+void main() {
+  runApp(MyApp());
+}
 
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
+    );
+  }
+}
 
-## Example
-Now in your Dart code, you can use:
-```dart
-@override
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key key, this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  @override
   Widget build(BuildContext context) {
     int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 60 * 60;
     return Scaffold(
@@ -96,11 +97,5 @@ Now in your Dart code, you can use:
       ),
     );
   }
-```
 
-![./example_2.png](https://github.com/wuweijian1997/FlutterCountdownTimer/blob/master/example_2.jpg)
-![/example_0.png](https://github.com/wuweijian1997/FlutterCountdownTimer/blob/master/example_0.jpg)
-
-![example_1.png](https://github.com/wuweijian1997/FlutterCountdownTimer/blob/master/example_1.jpg)
-![000.gif](https://github.com/wuweijian1997/FlutterCountdownTimer/blob/master/000.gif)
-
+}

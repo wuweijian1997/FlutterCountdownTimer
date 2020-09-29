@@ -94,7 +94,7 @@ class _CountDownState extends State<CountdownTimer> {
   timeListBuild(CurrentRemainingTime time) {
     List<Widget> list = [];
     print('time: $time');
-    if (time == null || time.isEnd) {
+    if (time == null) {
       list.add(emptyWidget);
       return list;
     }
@@ -126,7 +126,7 @@ class _CountDownState extends State<CountdownTimer> {
   }
 
   void checkDateEnd(CurrentRemainingTime data) {
-    if (data == null || data.isEnd) {
+    if (data == null) {
       onEnd?.call();
       disposeDiffTimer();
     }
@@ -196,8 +196,6 @@ class CurrentRemainingTime {
   final int hours;
   final int min;
   final int sec;
-
-  bool get isEnd => days == null && hours == null && min == null && sec == null;
 
   CurrentRemainingTime({this.days, this.hours, this.min, this.sec});
 

@@ -97,11 +97,9 @@ Now in your Dart code, you can use:
     );
   }
 ```
-![000.gif](https://github.com/wuweijian1997/FlutterCountdownTimer/blob/master/001.gif)
-
-![./example_2.png](https://github.com/wuweijian1997/FlutterCountdownTimer/blob/master/example_2.jpg)
-![/example_0.png](https://github.com/wuweijian1997/FlutterCountdownTimer/blob/master/example_0.jpg)
-
-![example_1.png](https://github.com/wuweijian1997/FlutterCountdownTimer/blob/master/example_1.jpg)
-![000.gif](https://github.com/wuweijian1997/FlutterCountdownTimer/blob/master/000.gif)
+<img src="./001.gif" height="600">
+<img src="./example_2.jpg" height="600">
+<img src="./example_0.jpg" height="600">
+<img src="./example_1.jpg" height="600">
+<img src="./000.gif" height="600">
 

@@ -16,4 +16,6 @@
 
 - feat: widgetBuilder
 - feat: example demo
+## [1.4.0] - 2020/9/29 21:47
+- fix: display 0 seconds then do onEnd after 1 sec
 

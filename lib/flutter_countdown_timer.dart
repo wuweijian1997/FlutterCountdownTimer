@@ -135,7 +135,7 @@ class _CountDownState extends State<CountdownTimer> {
     if (widget.endTime == null) return null;
     int diff = ((widget.endTime - DateTime.now().millisecondsSinceEpoch) / 1000)
         .floor();
-    if (diff < 0) {
+    if (diff <= 0) {
       return null;
     }
     int days, hours, min, sec;

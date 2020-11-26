@@ -1,8 +1,7 @@
-library flutter_countdown_timer;
-
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_countdown_timer/index.dart';
 
 typedef CountdownTimerWidgetBuilder = Widget Function(
     BuildContext context, CurrentRemainingTime time);
@@ -187,19 +186,5 @@ class _CountDownState extends State<CountdownTimer> {
   disposeDiffTimer() {
     _diffTimer?.cancel();
     _diffTimer = null;
-  }
-}
-
-class CurrentRemainingTime {
-  final int days;
-  final int hours;
-  final int min;
-  final int sec;
-
-  CurrentRemainingTime({this.days, this.hours, this.min, this.sec});
-
-  @override
-  String toString() {
-    return 'CurrentRemainingTime{days: $days, hours: $hours, min: $min, sec: $sec}';
   }
 }

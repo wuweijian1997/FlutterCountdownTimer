@@ -19,3 +19,6 @@
 ## [1.4.0] - 2020/9/29 21:47
 - fix: display 0 seconds then do onEnd after 1 sec
 
+## [1.5.0] - 2020/11/27 1:59
+- add Countdown widget
+

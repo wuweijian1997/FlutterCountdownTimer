@@ -97,6 +97,32 @@ Now in your Dart code, you can use:
     );
   }
 ```
+## Countdown
+```
+CountdownController countdownController = CountdownController(duration: Duration(minutes: 1));
+
+
+Scaffold(
+      body: Center(
+        child: Countdown(countdownController: countdownController),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(countdownController.isRunning ? Icons.stop : Icons.play_arrow),
+        onPressed: () {
+          if(!countdownController.isRunning) {
+          ///start
+            countdownController.start();
+          } else {
+          ///pause
+            countdownController.stop();
+          }
+          setState(() {
+            ///change icon
+          });
+        },
+      ),
+    )
+```
 ![000.gif](https://github.com/wuweijian1997/FlutterCountdownTimer/blob/master/001.gif)
 
 ![./example_2.png](https://github.com/wuweijian1997/FlutterCountdownTimer/blob/master/example_2.jpg)

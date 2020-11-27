@@ -3,31 +3,19 @@ import 'package:flutter_countdown_timer/index.dart';
 
 Widget _defaultCountdownBuilder(
   BuildContext context,
-  CurrentRemainingTime currentRemainingTime,
+  Duration currentRemainingTime,
 ) {
-  String timeText = '';
-  if (currentRemainingTime == null) {
-    return Text('0');
-  }
-  if (currentRemainingTime.days != null) {
-    timeText = '${currentRemainingTime.days} ';
-  }
-  if (currentRemainingTime.hours != null) {
-    timeText = '$timeText ${currentRemainingTime.hours}:';
-  }
-  if (currentRemainingTime.min != null) {
-    timeText = '$timeText ${currentRemainingTime.min}:';
-  }
-  if (currentRemainingTime.sec != null) {
-    timeText = '$timeText ${currentRemainingTime.sec}';
-  }
-
-  return Text('$timeText');
+  return Text('${currentRemainingTime?.inSeconds ?? 0}');
 }
 
+typedef CountdownWidgetBuilder = Widget Function(
+    BuildContext context, Duration time);
+
 class Countdown extends StatefulWidget {
+  ///controller
   final CountdownController countdownController;
-  final CountdownTimerWidgetBuilder builder;
+  ///custom widget builder
+  final CountdownWidgetBuilder builder;
 
   Countdown({
     @required this.countdownController,
@@ -39,6 +27,8 @@ class Countdown extends StatefulWidget {
 }
 
 class _CountdownState extends State<Countdown> {
+  CountdownWidgetBuilder get builder => widget.builder;
+
   CountdownController get countdownController => widget.countdownController;
 
   @override
@@ -49,10 +39,17 @@ class _CountdownState extends State<Countdown> {
     });
   }
 
-  CurrentRemainingTime get time => countdownController.currentRemainingTime;
+  Duration get time => countdownController.currentDuration;
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    assert(builder != null);
+    return builder.call(context, time);
+  }
+
+  @override
+  void dispose() {
+    countdownController.dispose();
+    super.dispose();
   }
 }

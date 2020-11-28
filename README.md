@@ -123,6 +123,8 @@ Scaffold(
       ),
     )
 ```
+![countdown.gif](https://github.com/wuweijian1997/FlutterCountdownTimer/blob/master/example/countdown.gif)
+
 ![000.gif](https://github.com/wuweijian1997/FlutterCountdownTimer/blob/master/001.gif)
 
 ![./example_2.png](https://github.com/wuweijian1997/FlutterCountdownTimer/blob/master/example_2.jpg)

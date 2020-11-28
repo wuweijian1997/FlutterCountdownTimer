@@ -7,24 +7,37 @@ class CountdownPage extends StatefulWidget {
 }
 
 class _CountdownPageState extends State<CountdownPage> {
-  CountdownController countdownController = CountdownController(duration: Duration(minutes: 1));
+  CountdownController countdownController =
+      CountdownController(duration: Duration(minutes: 1));
+  bool isRunning = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Countdown(countdownController: countdownController),
+        child: Countdown(
+            countdownController: countdownController,
+            builder: (_, Duration time) {
+              return Text(
+                '${time?.inSeconds ?? 0}',
+                style: TextStyle(fontSize: 80),
+              );
+            }),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(countdownController.isRunning ? Icons.stop : Icons.play_arrow),
+        child:
+            Icon(isRunning ? Icons.stop : Icons.play_arrow),
         onPressed: () {
-          if(!countdownController.isRunning) {
+          if (!countdownController.isRunning) {
             countdownController.start();
+            setState(() {
+              isRunning = true;
+            });
           } else {
             countdownController.stop();
+            setState(() {
+              isRunning = false;
+            });
           }
-          setState(() {
-            ///change icon
-          });
         },
       ),
     );

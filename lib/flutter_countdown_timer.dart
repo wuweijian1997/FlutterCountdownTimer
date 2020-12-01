@@ -21,7 +21,7 @@ class CountdownTimer extends StatefulWidget {
   CountdownTimer({
     Key key,
     this.endTime,
-    this.daysSymbol = const Text("天"),
+    this.daysSymbol = const Text("Days "),
     this.hoursSymbol = const Text(":"),
     this.minSymbol = const Text(":"),
     this.secSymbol = const Text(""),

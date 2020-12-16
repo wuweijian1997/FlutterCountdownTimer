@@ -22,3 +22,6 @@
 ## [1.5.0] - 2020/11/27 1:59
 - add Countdown widget
 
+## [1.6.0] - 2020/12/16 14:06
+- add FlutterCountdownController
+

@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_countdown_timer/index.dart';
@@ -8,29 +7,17 @@ typedef CountdownTimerWidgetBuilder = Widget Function(
 
 /// A Countdown.
 class CountdownTimer extends StatefulWidget {
-  final int endTime;
-  final Widget daysSymbol;
-  final Widget hoursSymbol;
-  final Widget minSymbol;
-  final Widget secSymbol;
-  final TextStyle textStyle;
-  final VoidCallback onEnd;
   final Widget emptyWidget;
   final CountdownTimerWidgetBuilder widgetBuilder;
+  final CountdownTimerController controller;
 
   CountdownTimer({
     Key key,
-    this.endTime,
-    this.daysSymbol = const Text("Days "),
-    this.hoursSymbol = const Text(":"),
-    this.minSymbol = const Text(":"),
-    this.secSymbol = const Text(""),
-    this.textStyle = const TextStyle(fontSize: 20, color: Colors.black),
-    this.onEnd,
     this.emptyWidget = const Center(
       child: Text('The current time has expired'),
     ),
     this.widgetBuilder,
+    @required this.controller,
   }) : super(key: key);
 
   @override
@@ -38,39 +25,27 @@ class CountdownTimer extends StatefulWidget {
 }
 
 class _CountDownState extends State<CountdownTimer> {
-  CurrentRemainingTime currentRemainingTime = CurrentRemainingTime();
-
-  Timer _diffTimer;
-
-  VoidCallback get onEnd => widget.onEnd;
-
-  TextStyle get textStyle => widget.textStyle;
+  CurrentRemainingTime get currentRemainingTime =>
+      controller.currentRemainingTime;
 
   Widget get emptyWidget => widget.emptyWidget;
-
-  Widget get daysSymbol => widget.daysSymbol;
-
-  Widget get hoursSymbol => widget.hoursSymbol;
-
-  Widget get minSymbol => widget.minSymbol;
-
-  Widget get secSymbol => widget.secSymbol;
 
   CountdownTimerWidgetBuilder get widgetBuilder =>
       widget.widgetBuilder ?? builderCountdownTimer;
 
-  @override
-  void initState() {
-    timerDiffDate();
-    super.initState();
-  }
+  CountdownTimerController get controller => widget.controller;
 
   @override
-  void didUpdateWidget(CountdownTimer oldWidget) {
-    if (oldWidget.endTime != widget.endTime) {
-      timerDiffDate();
+  void initState() {
+    super.initState();
+    if (controller.isRunning == false) {
+      controller.start();
     }
-    super.didUpdateWidget(oldWidget);
+    controller.addListener(() {
+      if (mounted) {
+        setState(() {});
+      }
+    });
   }
 
   @override
@@ -80,39 +55,21 @@ class _CountDownState extends State<CountdownTimer> {
 
   Widget builderCountdownTimer(
       BuildContext context, CurrentRemainingTime time) {
-    return DefaultTextStyle(
-      style: textStyle,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: timeListBuild(time),
-      ),
-    );
-  }
-
-  timeListBuild(CurrentRemainingTime time) {
-    List<Widget> list = [];
     if (time == null) {
-      list.add(emptyWidget);
-      return list;
+      return emptyWidget;
     }
+    String value = '';
     if (time.days != null) {
       var days = _getNumberAddZero(time.days);
-      list.add(Text(days));
-      list.add(daysSymbol);
+      value = '$value$days days ';
     }
-      var hours = _getNumberAddZero(time.hours ?? 0);
-      list.add(Text(
-        hours,
-      ));
-      list.add(hoursSymbol);
-      var min = _getNumberAddZero(time.min ?? 0);
-      list.add(Text(min));
-      list.add(minSymbol);
-      var sec = _getNumberAddZero(time.sec??0);
-      list.add(Text(sec));
-      list.add(secSymbol);
-    return list;
+    var hours = _getNumberAddZero(time.hours ?? 0);
+    value = '$value$hours : ';
+    var min = _getNumberAddZero(time.min ?? 0);
+    value = '$value$min : ';
+    var sec = _getNumberAddZero(time.sec ?? 0);
+    value = '$value$sec';
+    return Text(value);
   }
 
   String _getNumberAddZero(int number) {
@@ -121,70 +78,5 @@ class _CountDownState extends State<CountdownTimer> {
       return "0" + number.toString();
     }
     return number.toString();
-  }
-
-  void checkDateEnd(CurrentRemainingTime data) {
-    if (data == null) {
-      onEnd?.call();
-      disposeDiffTimer();
-    }
-  }
-
-  CurrentRemainingTime getDateData() {
-    if (widget.endTime == null) return null;
-    int diff = ((widget.endTime - DateTime.now().millisecondsSinceEpoch) / 1000)
-        .floor();
-    if (diff <= 0) {
-      return null;
-    }
-    int days, hours, min, sec;
-    if (diff >= 86400) {
-      days = (diff / 86400).floor();
-      diff -= days * 86400;
-    }
-    if (diff >= 3600) {
-      hours = (diff / 3600).floor();
-      diff -= hours * 3600;
-    }
-    if (diff >= 60) {
-      min = (diff / 60).floor();
-      diff -= min * 60;
-    }
-    sec = diff.toInt();
-    return CurrentRemainingTime(days: days, hours: hours, min: min, sec: sec);
-  }
-
-  timerDiffDate() {
-    CurrentRemainingTime data = getDateData();
-    setState(() {
-      currentRemainingTime = data;
-    });
-    disposeDiffTimer();
-    if (data == null) {
-      return null;
-    }
-    const period = const Duration(seconds: 1);
-    _diffTimer = Timer.periodic(period, (timer) {
-      //到时回调
-      CurrentRemainingTime data = getDateData();
-      setState(() {
-        currentRemainingTime = data;
-      });
-      checkDateEnd(data);
-      if (data == null) {
-        disposeDiffTimer();
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    disposeDiffTimer();
-    super.dispose();
-  }
-
-  disposeDiffTimer() {
-    _diffTimer?.cancel();
-    _diffTimer = null;
   }
 }

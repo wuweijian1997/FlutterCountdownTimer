@@ -51,7 +51,6 @@ class CountdownController extends ValueNotifier<int> {
         _diffTime(stepDuration);
       });
     } else {
-      print(duration);
       Future.delayed(duration, () {
         _diffTime(duration);
         _diffTimer = Timer.periodic(stepDuration, (Timer timer) {

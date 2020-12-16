@@ -2,33 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/index.dart';
 
 class CountdownTimerPage extends StatefulWidget {
-
   @override
   _CountdownTimerPageState createState() => _CountdownTimerPageState();
 }
 
 class _CountdownTimerPageState extends State<CountdownTimerPage> {
+  CountdownTimerController controller;
+  @override
+  void initState() {
+    super.initState();
+    int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 30;
+    controller = CountdownTimerController(endTime: endTime, onEnd: onEnd);
+  }
+
+  void onEnd() {
+    print('onEnd');
+  }
+
   @override
   Widget build(BuildContext context) {
-    int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 60;
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           CountdownTimer(
-            endTime: endTime,
-            onEnd: () {
-              print('onEnd');
-            },
+            controller: controller,
           ),
           CountdownTimer(
-            endTime: endTime,
-            textStyle: TextStyle(fontSize: 30, color: Colors.pink),
-          ),
-          CountdownTimer(
-            endTime: endTime,
+            controller: controller,
             widgetBuilder: (_, CurrentRemainingTime time) {
-              if(time == null) {
+              if (time == null) {
                 return Text('Game over');
               }
               return Text(
@@ -36,13 +39,13 @@ class _CountdownTimerPageState extends State<CountdownTimerPage> {
             },
           ),
           CountdownTimer(
-            endTime: endTime,
+            controller: controller,
             widgetBuilder: (BuildContext context, CurrentRemainingTime time) {
-              if(time == null) {
+              if (time == null) {
                 return Text('Game over');
               }
               List<Widget> list = [];
-              if(time.days != null) {
+              if (time.days != null) {
                 list.add(Row(
                   children: <Widget>[
                     Icon(Icons.sentiment_dissatisfied),
@@ -50,7 +53,7 @@ class _CountdownTimerPageState extends State<CountdownTimerPage> {
                   ],
                 ));
               }
-              if(time.hours != null) {
+              if (time.hours != null) {
                 list.add(Row(
                   children: <Widget>[
                     Icon(Icons.sentiment_satisfied),
@@ -58,7 +61,7 @@ class _CountdownTimerPageState extends State<CountdownTimerPage> {
                   ],
                 ));
               }
-              if(time.min != null) {
+              if (time.min != null) {
                 list.add(Row(
                   children: <Widget>[
                     Icon(Icons.sentiment_very_dissatisfied),
@@ -66,7 +69,7 @@ class _CountdownTimerPageState extends State<CountdownTimerPage> {
                   ],
                 ));
               }
-              if(time.sec != null) {
+              if (time.sec != null) {
                 list.add(Row(
                   children: <Widget>[
                     Icon(Icons.sentiment_very_satisfied),
@@ -83,7 +86,19 @@ class _CountdownTimerPageState extends State<CountdownTimerPage> {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.stop),
+        onPressed: () {
+          onEnd();
+          controller.disposeTimer();
+        },
+      ),
     );
   }
 
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 }

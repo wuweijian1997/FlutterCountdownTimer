@@ -5,55 +5,68 @@ A simple flutter countdown timer component.
 Add this to your package's pubspec.yaml file:
 ```yaml
 dependencies:
-  flutter_countdown_timer: ^1.5.0
+  flutter_countdown_timer: ^1.6.0
 ```
 Install it
 ```yaml
 $ flutter pub get
 ```
-##
+## CountdownTimer
+| name                      | description                                                                                                                                                            |
+| ------------------------- | ----------------------------------------------------------------- |
+| emptyWidget               | The widget displayed at the end of the countdown                  |
+| widgetBuilder             | Widget Function(BuildContext context, CurrentRemainingTime time)  |
+| wcontroller               | CountdownTimer start and dispose controller                       |
+
+## CountdownTimerController
 | name                      | description                                                                                                                                                            |
 | ------------------------- | ----------------------------------------------------------------- |
 | endTime                   | Countdown end time stamp                                          |
 | onEnd                     | Countdown end event                                               |
-| emptyWidget               | The widget displayed at the end of the countdown                  |
-| daysSymbol                | final Widget daysSymbol                                           |
-| hoursSymbol               | final Widget hoursSymbol                                          |
-| minSymbol                 | final Widget minSymbol                                            |
-| secSymbol                 | final Widget secSymbol                                            |
-| textStyle                 | final TextStyle textStyle                                         |
-| widgetBuilder             | Widget Function(BuildContext context, CurrentRemainingTime time)  |
 
 
 ## Example
 Now in your Dart code, you can use:
 ```dart
-@override
+  CountdownTimerController controller;
+  @override
+  void initState() {
+    super.initState();
+    int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 30;
+    controller = CountdownTimerController(endTime: endTime, onEnd: onEnd);
+  }
+
+  void onEnd() {
+    print('onEnd');
+  }
+
+  @override
   Widget build(BuildContext context) {
-    int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 60 * 60;
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           CountdownTimer(
-            endTime: endTime,
+            controller: controller,
           ),
           CountdownTimer(
-            endTime: endTime,
-            textStyle: TextStyle(fontSize: 30, color: Colors.pink),
-          ),
-          CountdownTimer(
-            endTime: endTime,
+            controller: controller,
             widgetBuilder: (_, CurrentRemainingTime time) {
+              if (time == null) {
+                return Text('Game over');
+              }
               return Text(
                   'days: [ ${time.days} ], hours: [ ${time.hours} ], min: [ ${time.min} ], sec: [ ${time.sec} ]');
             },
           ),
           CountdownTimer(
-            endTime: endTime,
+            controller: controller,
             widgetBuilder: (BuildContext context, CurrentRemainingTime time) {
+              if (time == null) {
+                return Text('Game over');
+              }
               List<Widget> list = [];
-              if(time.days != null) {
+              if (time.days != null) {
                 list.add(Row(
                   children: <Widget>[
                     Icon(Icons.sentiment_dissatisfied),
@@ -61,7 +74,7 @@ Now in your Dart code, you can use:
                   ],
                 ));
               }
-              if(time.hours != null) {
+              if (time.hours != null) {
                 list.add(Row(
                   children: <Widget>[
                     Icon(Icons.sentiment_satisfied),
@@ -69,7 +82,7 @@ Now in your Dart code, you can use:
                   ],
                 ));
               }
-              if(time.min != null) {
+              if (time.min != null) {
                 list.add(Row(
                   children: <Widget>[
                     Icon(Icons.sentiment_very_dissatisfied),
@@ -77,7 +90,7 @@ Now in your Dart code, you can use:
                   ],
                 ));
               }
-              if(time.sec != null) {
+              if (time.sec != null) {
                 list.add(Row(
                   children: <Widget>[
                     Icon(Icons.sentiment_very_satisfied),
@@ -94,7 +107,20 @@ Now in your Dart code, you can use:
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.stop),
+        onPressed: () {
+          onEnd();
+          controller.disposeTimer();
+        },
+      ),
     );
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 ```
 ## Countdown

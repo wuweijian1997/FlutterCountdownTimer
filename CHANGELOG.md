@@ -25,3 +25,6 @@
 ## [1.6.0] - 2020/12/16 14:06
 - add FlutterCountdownController
 
+## [2.0.0] - 2020/12/27 12:46
+- https://github.com/wuweijian1997/FlutterCountdownTimer/issues/18
+

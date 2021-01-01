@@ -11,6 +11,8 @@ class CountdownTimer extends StatefulWidget {
   final CountdownTimerWidgetBuilder widgetBuilder;
   final CountdownTimerController controller;
   final TextStyle textStyle;
+  final VoidCallback onEnd;
+  final int endTime;
 
   CountdownTimer({
     Key key,
@@ -18,15 +20,20 @@ class CountdownTimer extends StatefulWidget {
       child: Text('The current time has expired'),
     ),
     this.widgetBuilder,
-    @required this.controller,
+    this.controller,
     this.textStyle,
-  }) : super(key: key);
+    this.endTime,
+    this.onEnd,
+  })  : assert(endTime != null || controller != null),
+        super(key: key);
 
   @override
   _CountDownState createState() => _CountDownState();
 }
 
 class _CountDownState extends State<CountdownTimer> {
+  CountdownTimerController controller;
+
   CurrentRemainingTime get currentRemainingTime =>
       controller.currentRemainingTime;
 
@@ -35,12 +42,17 @@ class _CountDownState extends State<CountdownTimer> {
   CountdownTimerWidgetBuilder get widgetBuilder =>
       widget.widgetBuilder ?? builderCountdownTimer;
 
-  CountdownTimerController get controller => widget.controller;
   TextStyle get textStyle => widget.textStyle;
 
   @override
   void initState() {
     super.initState();
+    initController();
+  }
+
+  initController() {
+    controller = widget.controller ??
+        CountdownTimerController(endTime: widget.endTime, onEnd: widget.onEnd);
     if (controller.isRunning == false) {
       controller.start();
     }
@@ -49,6 +61,15 @@ class _CountDownState extends State<CountdownTimer> {
         setState(() {});
       }
     });
+  }
+
+  @override
+  void didUpdateWidget(CountdownTimer oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.endTime != widget.endTime || widget.controller != oldWidget.controller) {
+      controller.dispose();
+      initController();
+    }
   }
 
   @override
@@ -72,7 +93,10 @@ class _CountDownState extends State<CountdownTimer> {
     value = '$value$min : ';
     var sec = _getNumberAddZero(time.sec ?? 0);
     value = '$value$sec';
-    return Text(value, style: textStyle,);
+    return Text(
+      value,
+      style: textStyle,
+    );
   }
 
   String _getNumberAddZero(int number) {

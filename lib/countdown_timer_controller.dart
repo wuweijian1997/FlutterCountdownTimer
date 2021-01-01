@@ -15,6 +15,7 @@ class CountdownTimerController extends ChangeNotifier {
   Duration _period = const Duration(seconds: 1);
 
   bool get isRunning => _isRunning;
+  set endTime(int endTime) => _endTime = endTime;
 
   CurrentRemainingTime get currentRemainingTime => _currentRemainingTime;
 

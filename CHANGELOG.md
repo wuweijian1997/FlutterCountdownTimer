@@ -31,5 +31,8 @@
 ## [2.0.1] - 2020/1/1 13:24
 - Add textStyle
 
+## [2.1.0] - 2020/1/1 23:03
+- Add endTime and onEnd
+
 
 

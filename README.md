@@ -5,7 +5,7 @@ A simple flutter countdown timer component.
 Add this to your package's pubspec.yaml file:
 ```yaml
 dependencies:
-  flutter_countdown_timer: ^2.0.1
+  flutter_countdown_timer: ^2.1.0
 ```
 Install it
 ```yaml
@@ -16,7 +16,7 @@ $ flutter pub get
 | ------------------------- | ----------------------------------------------------------------- |
 | emptyWidget               | The widget displayed at the end of the countdown                  |
 | widgetBuilder             | Widget Function(BuildContext context, CurrentRemainingTime time)  |
-| wcontroller               | CountdownTimer start and dispose controller                       |
+| controller               | CountdownTimer start and dispose controller                       |
 
 ## CountdownTimerController
 | name                      | description                                                                                                                                                            |
@@ -29,10 +29,11 @@ $ flutter pub get
 Now in your Dart code, you can use:
 ```dart
   CountdownTimerController controller;
+  int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 30;
+
   @override
   void initState() {
     super.initState();
-    int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 30;
     controller = CountdownTimerController(endTime: endTime, onEnd: onEnd);
   }
 
@@ -47,7 +48,12 @@ Now in your Dart code, you can use:
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           CountdownTimer(
-            controller: controller,
+              textStyle: TextStyle(
+                fontSize: 30,
+                color: Colors.red,
+              ),
+              onEnd: onEnd,
+              endTime: endTime,
           ),
           CountdownTimer(
             controller: controller,

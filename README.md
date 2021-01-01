@@ -17,6 +17,8 @@ $ flutter pub get
 | emptyWidget               | The widget displayed at the end of the countdown                  |
 | widgetBuilder             | Widget Function(BuildContext context, CurrentRemainingTime time)  |
 | controller               | CountdownTimer start and dispose controller                       |
+| endTime               | Countdown end time stamp                        |
+| onEnd                     | Countdown end event                        |
 
 ## CountdownTimerController
 | name                      | description                                                                                                                                                            |

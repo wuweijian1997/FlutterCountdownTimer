@@ -28,3 +28,8 @@
 ## [2.0.0] - 2020/12/27 12:46
 - https://github.com/wuweijian1997/FlutterCountdownTimer/issues/18
 
+## [2.0.1] - 2020/1/1 13:24
+- Add textStyle
+
+
+

@@ -10,6 +10,7 @@ class CountdownTimer extends StatefulWidget {
   final Widget emptyWidget;
   final CountdownTimerWidgetBuilder widgetBuilder;
   final CountdownTimerController controller;
+  final TextStyle textStyle;
 
   CountdownTimer({
     Key key,
@@ -18,6 +19,7 @@ class CountdownTimer extends StatefulWidget {
     ),
     this.widgetBuilder,
     @required this.controller,
+    this.textStyle,
   }) : super(key: key);
 
   @override
@@ -34,6 +36,7 @@ class _CountDownState extends State<CountdownTimer> {
       widget.widgetBuilder ?? builderCountdownTimer;
 
   CountdownTimerController get controller => widget.controller;
+  TextStyle get textStyle => widget.textStyle;
 
   @override
   void initState() {
@@ -69,7 +72,7 @@ class _CountDownState extends State<CountdownTimer> {
     value = '$value$min : ';
     var sec = _getNumberAddZero(time.sec ?? 0);
     value = '$value$sec';
-    return Text(value);
+    return Text(value, style: textStyle,);
   }
 
   String _getNumberAddZero(int number) {

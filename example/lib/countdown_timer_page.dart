@@ -26,6 +26,10 @@ class _CountdownTimerPageState extends State<CountdownTimerPage> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           CountdownTimer(
+            textStyle: TextStyle(
+              fontSize: 30,
+              color: Colors.red,
+            ),
             controller: controller,
           ),
           CountdownTimer(

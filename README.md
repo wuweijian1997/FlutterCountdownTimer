@@ -1,5 +1,5 @@
 ## CountdownTimer
-A simple flutter countdown timer widget.
+A simple flutter countdown timer widget.Count down through the end timestamp,Trigger an event after the countdown ends.
 
 ## Installing
 Add this to your package's pubspec.yaml file:

@@ -1,5 +1,5 @@
 ## CountdownTimer
-A simple flutter countdown timer component.
+A simple flutter countdown timer widget.
 
 ## Installing
 Add this to your package's pubspec.yaml file:
@@ -19,6 +19,7 @@ $ flutter pub get
 | controller               | CountdownTimer start and dispose controller                       |
 | endTime               | Countdown end time stamp                        |
 | onEnd                     | Countdown end event                        |
+| textStyle                     | Text color                        |
 
 ## CountdownTimerController
 | name                      | description                                                                                                                                                            |
@@ -28,7 +29,30 @@ $ flutter pub get
 
 
 ## Example
-Now in your Dart code, you can use:
+### Simple to use
+```dart
+int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 30;
+
+...
+CountdownTimer(
+  endTime: endTime,
+),
+```
+### Execute event at end.
+```dart
+int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 30;
+
+void onEnd() {
+  print('onEnd');
+}
+
+...
+CountdownTimer(
+  endTime: endTime,
+  onEnd: onEnd,
+),
+```
+### Use the controller to end the countdown early.
 ```dart
   CountdownTimerController controller;
   int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 30;
@@ -46,74 +70,12 @@ Now in your Dart code, you can use:
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
+      body: Center(
           CountdownTimer(
-              textStyle: TextStyle(
-                fontSize: 30,
-                color: Colors.red,
-              ),
+              controller: controller,
               onEnd: onEnd,
               endTime: endTime,
           ),
-          CountdownTimer(
-            controller: controller,
-            widgetBuilder: (_, CurrentRemainingTime time) {
-              if (time == null) {
-                return Text('Game over');
-              }
-              return Text(
-                  'days: [ ${time.days} ], hours: [ ${time.hours} ], min: [ ${time.min} ], sec: [ ${time.sec} ]');
-            },
-          ),
-          CountdownTimer(
-            controller: controller,
-            widgetBuilder: (BuildContext context, CurrentRemainingTime time) {
-              if (time == null) {
-                return Text('Game over');
-              }
-              List<Widget> list = [];
-              if (time.days != null) {
-                list.add(Row(
-                  children: <Widget>[
-                    Icon(Icons.sentiment_dissatisfied),
-                    Text(time.days.toString()),
-                  ],
-                ));
-              }
-              if (time.hours != null) {
-                list.add(Row(
-                  children: <Widget>[
-                    Icon(Icons.sentiment_satisfied),
-                    Text(time.hours.toString()),
-                  ],
-                ));
-              }
-              if (time.min != null) {
-                list.add(Row(
-                  children: <Widget>[
-                    Icon(Icons.sentiment_very_dissatisfied),
-                    Text(time.min.toString()),
-                  ],
-                ));
-              }
-              if (time.sec != null) {
-                list.add(Row(
-                  children: <Widget>[
-                    Icon(Icons.sentiment_very_satisfied),
-                    Text(time.sec.toString()),
-                  ],
-                ));
-              }
-
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: list,
-              );
-            },
-          ),
-        ],
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.stop),
@@ -129,6 +91,28 @@ Now in your Dart code, you can use:
   void dispose() {
     controller.dispose();
     super.dispose();
+  }
+```
+### Custom style.
+```dart
+  int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 30;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+          CountdownTimer(
+            endTime: endTime,
+            widgetBuilder: (_, CurrentRemainingTime time) {
+              if (time == null) {
+                return Text('Game over');
+              }
+              return Text(
+                  'days: [ ${time.days} ], hours: [ ${time.hours} ], min: [ ${time.min} ], sec: [ ${time.sec} ]');
+            },
+          ),
+      ),
+    );
   }
 ```
 ## Countdown

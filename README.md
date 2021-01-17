@@ -5,7 +5,7 @@ A simple flutter countdown timer widget.Count down through the end timestamp,Tri
 Add this to your package's pubspec.yaml file:
 ```yaml
 dependencies:
-  flutter_countdown_timer: ^2.1.0
+  flutter_countdown_timer: ^3.0.0
 ```
 Install it
 ```yaml
@@ -14,7 +14,7 @@ $ flutter pub get
 ## CountdownTimer
 | name                      | description                                                                                                                                                            |
 | ------------------------- | ----------------------------------------------------------------- |
-| emptyWidget               | The widget displayed at the end of the countdown                  |
+| endWidget               | The widget displayed at the end of the countdown                  |
 | widgetBuilder             | Widget Function(BuildContext context, CurrentRemainingTime time)  |
 | controller               | CountdownTimer start and dispose controller                       |
 | endTime               | Countdown end time stamp                        |

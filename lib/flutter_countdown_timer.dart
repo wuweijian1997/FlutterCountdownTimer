@@ -7,16 +7,22 @@ typedef CountdownTimerWidgetBuilder = Widget Function(
 
 /// A Countdown.
 class CountdownTimer extends StatefulWidget {
-  final Widget emptyWidget;
+  ///Widget displayed after the countdown
+  final Widget endWidget;
+  ///Used to customize the countdown style widget
   final CountdownTimerWidgetBuilder widgetBuilder;
+  ///Countdown controller, can end the countdown event early
   final CountdownTimerController controller;
+  ///Countdown text style
   final TextStyle textStyle;
+  ///Event called after the countdown ends
   final VoidCallback onEnd;
+  ///The end time of the countdown.
   final int endTime;
 
   CountdownTimer({
     Key key,
-    this.emptyWidget = const Center(
+    this.endWidget = const Center(
       child: Text('The current time has expired'),
     ),
     this.widgetBuilder,
@@ -37,7 +43,7 @@ class _CountDownState extends State<CountdownTimer> {
   CurrentRemainingTime get currentRemainingTime =>
       controller.currentRemainingTime;
 
-  Widget get emptyWidget => widget.emptyWidget;
+  Widget get endWidget => widget.endWidget;
 
   CountdownTimerWidgetBuilder get widgetBuilder =>
       widget.widgetBuilder ?? builderCountdownTimer;
@@ -50,6 +56,7 @@ class _CountDownState extends State<CountdownTimer> {
     initController();
   }
 
+  ///Generate countdown controller.
   initController() {
     controller = widget.controller ??
         CountdownTimerController(endTime: widget.endTime, onEnd: widget.onEnd);
@@ -80,7 +87,7 @@ class _CountDownState extends State<CountdownTimer> {
   Widget builderCountdownTimer(
       BuildContext context, CurrentRemainingTime time) {
     if (time == null) {
-      return emptyWidget;
+      return endWidget;
     }
     String value = '';
     if (time.days != null) {
@@ -99,6 +106,7 @@ class _CountDownState extends State<CountdownTimer> {
     );
   }
 
+  /// 1 -> 01
   String _getNumberAddZero(int number) {
     assert(number != null);
     if (number < 10) {

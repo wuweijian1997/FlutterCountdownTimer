@@ -33,6 +33,8 @@
 
 ## [2.1.0] - 2020/1/1 23:03
 - Add endTime and onEnd
-
+## [3.0.0] - 2021/1/17 22:06
+- Add notes.
+- Modify part naming.
 
 

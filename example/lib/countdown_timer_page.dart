@@ -8,18 +8,12 @@ class CountdownTimerPage extends StatefulWidget {
 
 class _CountdownTimerPageState extends State<CountdownTimerPage> {
   CountdownTimerController controller;
-  int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 30;
+  int endTime = DateTime.now().millisecondsSinceEpoch + Duration(days: 0, hours: 1, seconds: 30).inMilliseconds;
 
   @override
   void initState() {
     super.initState();
     controller = CountdownTimerController(endTime: endTime, onEnd: onEnd);
-    Future.delayed(Duration(seconds: 5), () {
-      setState(() {
-        endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 30;
-        controller.endTime = endTime;
-      });
-    });
   }
 
   void onEnd() {

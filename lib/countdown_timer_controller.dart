@@ -73,11 +73,15 @@ class CountdownTimerController extends ChangeNotifier {
     if (remainingTimeStamp >= _hourSecond) {
       hours = (remainingTimeStamp / _hourSecond).floor();
       remainingTimeStamp -= hours * _hourSecond;
+    } else if(days != null) {
+      hours = 0;
     }
     ///Calculate remaining minutes.
     if (remainingTimeStamp >= _minuteSecond) {
       min = (remainingTimeStamp / _minuteSecond).floor();
       remainingTimeStamp -= min * _minuteSecond;
+    } else if(hours != null) {
+      min = 0;
     }
     ///Calculate remaining second.
     sec = remainingTimeStamp.toInt();

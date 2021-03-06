@@ -5,7 +5,7 @@ A simple flutter countdown timer widget.Count down through the end timestamp,Tri
 Add this to your package's pubspec.yaml file:
 ```yaml
 dependencies:
-  flutter_countdown_timer: ^3.0.1
+  flutter_countdown_timer: ^4.0.0
 ```
 Install it
 ```yaml
@@ -203,11 +203,11 @@ Scaffold(
 ```
 ![countdown.gif](https://github.com/wuweijian1997/FlutterCountdownTimer/blob/master/example/countdown.gif)
 
-![000.gif](https://github.com/wuweijian1997/FlutterCountdownTimer/blob/master/001.gif)
+![000.gif](https://github.com/wuweijian1997/FlutterCountdownTimer/blob/master/example/001.gif)
 
-![./example_2.png](https://github.com/wuweijian1997/FlutterCountdownTimer/blob/master/example_2.jpg)
-![/example_0.png](https://github.com/wuweijian1997/FlutterCountdownTimer/blob/master/example_0.jpg)
+![./example_2.png](https://github.com/wuweijian1997/FlutterCountdownTimer/blob/master/example/example_2.jpg)
+![/example_0.png](https://github.com/wuweijian1997/FlutterCountdownTimer/blob/master/example/example_0.jpg)
 
-![example_1.png](https://github.com/wuweijian1997/FlutterCountdownTimer/blob/master/example_1.jpg)
-![000.gif](https://github.com/wuweijian1997/FlutterCountdownTimer/blob/master/000.gif)
+![example_1.png](https://github.com/wuweijian1997/FlutterCountdownTimer/blob/master/example/example_1.jpg)
+![000.gif](https://github.com/wuweijian1997/FlutterCountdownTimer/blob/master/example/000.gif)
 

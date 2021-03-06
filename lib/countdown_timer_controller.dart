@@ -5,19 +5,18 @@ import 'package:flutter_countdown_timer/index.dart';
 
 ///Countdown timer controller.
 class CountdownTimerController extends ChangeNotifier {
-  CountdownTimerController({int endTime, this.onEnd})
-      : assert(endTime != null),
-        _endTime = endTime;
+  CountdownTimerController({required int endTime, this.onEnd})
+      : _endTime = endTime;
   ///Event called after the countdown ends
-  final VoidCallback onEnd;
+  final VoidCallback? onEnd;
   ///The end time of the countdown.
   int _endTime;
   ///Is the countdown running.
   bool _isRunning = false;
   ///Countdown remaining time.
-  CurrentRemainingTime _currentRemainingTime;
+  CurrentRemainingTime? _currentRemainingTime;
   ///Countdown timer.
-  Timer _countdownTimer;
+  Timer? _countdownTimer;
   ///Intervals.
   Duration intervals = const Duration(seconds: 1);
   ///Seconds in a day
@@ -31,7 +30,7 @@ class CountdownTimerController extends ChangeNotifier {
   set endTime(int endTime) => _endTime = endTime;
 
   ///Get the current remaining time
-  CurrentRemainingTime get currentRemainingTime => _currentRemainingTime;
+  CurrentRemainingTime? get currentRemainingTime => _currentRemainingTime;
 
   ///Start countdown
   start() {
@@ -54,15 +53,13 @@ class CountdownTimerController extends ChangeNotifier {
   }
 
   ///Calculate current remaining time.
-  CurrentRemainingTime _calculateCurrentRemainingTime() {
-    if (_endTime == null) return null;
-
+  CurrentRemainingTime? _calculateCurrentRemainingTime() {
     int remainingTimeStamp =
         ((_endTime - DateTime.now().millisecondsSinceEpoch) / 1000).floor();
     if (remainingTimeStamp <= 0) {
       return null;
     }
-    int days, hours, min, sec;
+    int? days, hours, min, sec;
 
     ///Calculate the number of days remaining.
     if (remainingTimeStamp >= _daySecond) {

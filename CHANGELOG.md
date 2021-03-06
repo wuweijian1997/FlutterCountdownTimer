@@ -40,3 +40,6 @@
 ## [3.0.1] - 2021/2/22 8:39
 - Fixed: https://github.com/wuweijian1997/FlutterCountdownTimer/issues/25
 
+## [4.0.0] - 2021/3/26 13:34
+- Upgrade null safety
+

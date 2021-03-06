@@ -1,8 +1,8 @@
 class CurrentRemainingTime {
-  final int days;
-  final int hours;
-  final int min;
-  final int sec;
+  final int? days;
+  final int? hours;
+  final int? min;
+  final int? sec;
 
   CurrentRemainingTime({this.days, this.hours, this.min, this.sec});
 

@@ -3,25 +3,25 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_countdown_timer/index.dart';
 
 typedef CountdownTimerWidgetBuilder = Widget Function(
-    BuildContext context, CurrentRemainingTime time);
+    BuildContext context, CurrentRemainingTime? time);
 
 /// A Countdown.
 class CountdownTimer extends StatefulWidget {
   ///Widget displayed after the countdown
   final Widget endWidget;
   ///Used to customize the countdown style widget
-  final CountdownTimerWidgetBuilder widgetBuilder;
+  final CountdownTimerWidgetBuilder? widgetBuilder;
   ///Countdown controller, can end the countdown event early
-  final CountdownTimerController controller;
+  final CountdownTimerController? controller;
   ///Countdown text style
-  final TextStyle textStyle;
+  final TextStyle? textStyle;
   ///Event called after the countdown ends
-  final VoidCallback onEnd;
+  final VoidCallback? onEnd;
   ///The end time of the countdown.
-  final int endTime;
+  final int? endTime;
 
   CountdownTimer({
-    Key key,
+    Key? key,
     this.endWidget = const Center(
       child: Text('The current time has expired'),
     ),
@@ -38,9 +38,9 @@ class CountdownTimer extends StatefulWidget {
 }
 
 class _CountDownState extends State<CountdownTimer> {
-  CountdownTimerController controller;
+  late CountdownTimerController controller;
 
-  CurrentRemainingTime get currentRemainingTime =>
+  CurrentRemainingTime? get currentRemainingTime =>
       controller.currentRemainingTime;
 
   Widget get endWidget => widget.endWidget;
@@ -48,7 +48,7 @@ class _CountDownState extends State<CountdownTimer> {
   CountdownTimerWidgetBuilder get widgetBuilder =>
       widget.widgetBuilder ?? builderCountdownTimer;
 
-  TextStyle get textStyle => widget.textStyle;
+  TextStyle? get textStyle => widget.textStyle;
 
   @override
   void initState() {
@@ -59,7 +59,7 @@ class _CountDownState extends State<CountdownTimer> {
   ///Generate countdown controller.
   initController() {
     controller = widget.controller ??
-        CountdownTimerController(endTime: widget.endTime, onEnd: widget.onEnd);
+        CountdownTimerController(endTime: widget.endTime!, onEnd: widget.onEnd);
     if (controller.isRunning == false) {
       controller.start();
     }
@@ -85,13 +85,13 @@ class _CountDownState extends State<CountdownTimer> {
   }
 
   Widget builderCountdownTimer(
-      BuildContext context, CurrentRemainingTime time) {
+      BuildContext context, CurrentRemainingTime? time) {
     if (time == null) {
       return endWidget;
     }
     String value = '';
     if (time.days != null) {
-      var days = _getNumberAddZero(time.days);
+      var days = _getNumberAddZero(time.days!);
       value = '$value$days days ';
     }
     var hours = _getNumberAddZero(time.hours ?? 0);
@@ -108,7 +108,6 @@ class _CountDownState extends State<CountdownTimer> {
 
   /// 1 -> 01
   String _getNumberAddZero(int number) {
-    assert(number != null);
     if (number < 10) {
       return "0" + number.toString();
     }

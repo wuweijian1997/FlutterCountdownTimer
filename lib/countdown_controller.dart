@@ -6,20 +6,20 @@ import 'package:flutter_countdown_timer/index.dart';
 
 class CountdownController extends ValueNotifier<int> {
   CountdownController({
-    int timestamp,
-    Duration duration,
+    int? timestamp,
+    Duration? duration,
     this.stepDuration = const Duration(milliseconds: 1000),
   })  : assert((timestamp != null && timestamp > 0) || duration != null),
-        super(timestamp ?? duration.inMilliseconds);
-  Timer _diffTimer;
-  int _lastTimestamp;
-  int _lostTime;
+        super((timestamp ?? duration?.inMilliseconds)!);
+  Timer? _diffTimer;
+  int? _lastTimestamp;
+  int? _lostTime;
   final Duration stepDuration;
 
   bool get isRunning => _diffTimer != null;
 
   CurrentRemainingTime get currentRemainingTime {
-    int days, hours, min, sec;
+    int? days, hours, min, sec;
     int _timestamp = (value / 1000).floor();
     if (value >= 86400) {
       days = (_timestamp / 86400).floor();
@@ -72,14 +72,14 @@ class CountdownController extends ValueNotifier<int> {
   ///pause
   stop() {
     if (_lastTimestamp != null && value > 0) {
-      _lostTime = DateTime.now().millisecond - _lastTimestamp;
+      _lostTime = DateTime.now().millisecond - _lastTimestamp!;
     }
     _dispose();
   }
 
   Duration _getDuration() {
-    if (_lostTime != null && _lostTime > 0 && _lostTime < 1000) {
-      return Duration(milliseconds: 1000 - _lostTime);
+    if (_lostTime != null && _lostTime! > 0 && _lostTime! < 1000) {
+      return Duration(milliseconds: 1000 - _lostTime!);
     }
     return stepDuration;
   }

@@ -5,7 +5,7 @@ Widget _defaultCountdownBuilder(
   BuildContext context,
   Duration currentRemainingTime,
 ) {
-  return Text('${currentRemainingTime?.inSeconds ?? 0}');
+  return Text('${currentRemainingTime.inSeconds}');
 }
 
 typedef CountdownWidgetBuilder = Widget Function(
@@ -18,7 +18,7 @@ class Countdown extends StatefulWidget {
   final CountdownWidgetBuilder builder;
 
   Countdown({
-    @required this.countdownController,
+    required this.countdownController,
     this.builder = _defaultCountdownBuilder,
   });
 
@@ -43,7 +43,6 @@ class _CountdownState extends State<Countdown> {
 
   @override
   Widget build(BuildContext context) {
-    assert(builder != null);
     return builder.call(context, time);
   }
 

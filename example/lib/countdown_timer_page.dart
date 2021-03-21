@@ -6,14 +6,17 @@ class CountdownTimerPage extends StatefulWidget {
   _CountdownTimerPageState createState() => _CountdownTimerPageState();
 }
 
-class _CountdownTimerPageState extends State<CountdownTimerPage> {
+class _CountdownTimerPageState extends State<CountdownTimerPage>
+    with SingleTickerProviderStateMixin {
   late CountdownTimerController controller;
-  int endTime = DateTime.now().millisecondsSinceEpoch + Duration(days: 0, hours: 1, seconds: 30).inMilliseconds;
+  int endTime = DateTime.now().millisecondsSinceEpoch +
+      Duration(seconds: 30).inMilliseconds;
 
   @override
   void initState() {
     super.initState();
-    controller = CountdownTimerController(endTime: endTime, onEnd: onEnd);
+    controller =
+        CountdownTimerController(endTime: endTime, onEnd: onEnd, vsync: this);
   }
 
   void onEnd() {
@@ -83,6 +86,19 @@ class _CountdownTimerPageState extends State<CountdownTimerPage> {
                   ],
                 ));
               }
+              if (time.milliseconds != null) {
+                list.add(Row(
+                  children: <Widget>[
+                    Icon(Icons.sentiment_very_satisfied),
+                    AnimatedBuilder(
+                      animation: time.milliseconds!,
+                      builder: (context, child) {
+                        return Text("${(time.milliseconds!.value * 1000).toInt()}");
+                      },
+                    )
+                  ],
+                ));
+              }
 
               return Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -96,7 +112,7 @@ class _CountdownTimerPageState extends State<CountdownTimerPage> {
         child: Icon(Icons.stop),
         onPressed: () {
           onEnd();
-          if(controller.isRunning) {
+          if (controller.isRunning) {
             controller.disposeTimer();
           } else {
             controller.start();

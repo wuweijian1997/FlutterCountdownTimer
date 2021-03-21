@@ -5,7 +5,7 @@ A simple flutter countdown timer widget.Count down through the end timestamp,Tri
 Add this to your package's pubspec.yaml file:
 ```yaml
 dependencies:
-  flutter_countdown_timer: ^4.0.1
+  flutter_countdown_timer: ^4.0.2
 ```
 Install it
 ```yaml
@@ -114,6 +114,67 @@ CountdownTimer(
       ),
     );
   }
+```
+### Using millisecond animation
+class _CountdownTimerPageState extends State<CountdownTimerPage>
+    with SingleTickerProviderStateMixin {
+  late CountdownTimerController controller;
+  int endTime = DateTime.now().millisecondsSinceEpoch +
+      Duration(seconds: 30).inMilliseconds;
+
+  @override
+  void initState() {
+    super.initState();
+    controller =
+        CountdownTimerController(endTime: endTime, onEnd: onEnd, vsync: this);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          CountdownTimer(
+            controller: controller,
+            widgetBuilder: (BuildContext context, CurrentRemainingTime? time) {
+              if (time == null) {
+                return Text('Game over');
+              }
+              List<Widget> list = [];
+              if (time.sec != null) {
+                list.add(Row(
+                  children: <Widget>[
+                    Icon(Icons.sentiment_very_satisfied),
+                    Text(time.sec.toString()),
+                  ],
+                ));
+              }
+              if (time.milliseconds != null) {
+                list.add(Row(
+                  children: <Widget>[
+                    Icon(Icons.sentiment_very_satisfied),
+                    AnimatedBuilder(
+                      animation: time.milliseconds!,
+                      builder: (context, child) {
+                        return Text("${(time.milliseconds!.value * 1000).toInt()}");
+                      },
+                    )
+                  ],
+                ));
+              }
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: list,
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+}
 ```
 ### In ListView.builder
 ```

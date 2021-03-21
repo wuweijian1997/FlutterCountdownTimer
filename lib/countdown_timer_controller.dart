@@ -34,8 +34,8 @@ class CountdownTimerController extends ChangeNotifier {
 
   ///Start countdown
   start() {
-    _isRunning = true;
     disposeTimer();
+    _isRunning = true;
     _countdownPeriodicEvent();
     _countdownTimer = Timer.periodic(intervals, (timer) {
       _countdownPeriodicEvent();

@@ -96,7 +96,11 @@ class _CountdownTimerPageState extends State<CountdownTimerPage> {
         child: Icon(Icons.stop),
         onPressed: () {
           onEnd();
-          controller.disposeTimer();
+          if(controller.isRunning) {
+            controller.disposeTimer();
+          } else {
+            controller.start();
+          }
         },
       ),
     );

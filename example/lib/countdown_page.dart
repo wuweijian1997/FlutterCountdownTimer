@@ -18,7 +18,7 @@ class _CountdownPageState extends State<CountdownPage> {
             countdownController: countdownController,
             builder: (_, Duration time) {
               return Text(
-                '${time?.inSeconds ?? 0}',
+                '${time.inSeconds}',
                 style: TextStyle(fontSize: 80),
               );
             }),

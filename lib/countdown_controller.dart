@@ -1,97 +1,116 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/index.dart';
 
-class CountdownController extends ValueNotifier<int> {
-  CountdownController({
-    int timestamp,
-    Duration duration,
-    this.stepDuration = const Duration(milliseconds: 1000),
-  })  : assert((timestamp != null && timestamp > 0) || duration != null),
-        super(timestamp ?? duration.inMilliseconds);
-  Timer _diffTimer;
-  int _lastTimestamp;
-  int _lostTime;
-  final Duration stepDuration;
+///Countdown timer controller.
+class CountdownTimerController extends ChangeNotifier {
+  CountdownTimerController({int endTime, this.onEnd})
+      : assert(endTime != null),
+        _endTime = endTime;
+  ///Event called after the countdown ends
+  final VoidCallback onEnd;
+  ///The end time of the countdown.
+  int _endTime;
+  ///Is the countdown running.
+  bool _isRunning = false;
+  ///Is the countdown pause.
+  bool _pause = false;
+  int _pauseCount = 0;
+  ///Countdown remaining time.
+  CurrentRemainingTime _currentRemainingTime;
+  ///Countdown timer.
+  Timer _countdownTimer;
+  ///Intervals.
+  Duration intervals = const Duration(seconds: 1);
+  ///Seconds in a day
+  int _daySecond = 60 * 60 * 24;
+  ///Seconds in an hour
+  int _hourSecond = 60 * 60;
+  ///Seconds in a minute
+  int _minuteSecond = 60;
+  bool get isRunning => _isRunning;
+  bool get pause => _pause;
 
-  bool get isRunning => _diffTimer != null;
+  set endTime(int endTime) => _endTime = endTime;
 
-  CurrentRemainingTime get currentRemainingTime {
+  ///Get the current remaining time
+  CurrentRemainingTime get currentRemainingTime => _currentRemainingTime;
+
+  ///Start countdown
+  start() {
+    _isRunning = true;
+    disposeTimer();
+    _countdownPeriodicEvent();
+    _countdownTimer = Timer.periodic(intervals, (timer) {
+      _countdownPeriodicEvent();
+    });
+  }
+
+  ///Check if the countdown is over and issue a notification.
+  _countdownPeriodicEvent() {
+    _currentRemainingTime = _calculateCurrentRemainingTime();
+    notifyListeners();
+    if (_currentRemainingTime == null) {
+      onEnd?.call();
+      disposeTimer();
+    }
+  }
+
+  ///Calculate current remaining time.
+  CurrentRemainingTime _calculateCurrentRemainingTime() {
+    if (_endTime == null) return null;
+
+    int remainingTimeStamp = ((_endTime - DateTime.now().millisecondsSinceEpoch) / 1000).floor();
+
+    // check is pause
+    if(_pause){
+      _pauseCount = _pauseCount + 1;
+    }
+    remainingTimeStamp = remainingTimeStamp + _pauseCount;
+    
+    if (remainingTimeStamp <= 0) {
+      return null;
+    }
     int days, hours, min, sec;
-    int _timestamp = (value / 1000).floor();
-    if (value >= 86400) {
-      days = (_timestamp / 86400).floor();
-      _timestamp -= days * 86400;
+
+    ///Calculate the number of days remaining.
+    if (remainingTimeStamp >= _daySecond) {
+      days = (remainingTimeStamp / _daySecond).floor();
+      remainingTimeStamp -= days * _daySecond;
     }
-    if (_timestamp >= 3600) {
-      hours = (_timestamp / 3600).floor();
-      _timestamp -= hours * 3600;
+    ///Calculate remaining hours.
+    if (remainingTimeStamp >= _hourSecond) {
+      hours = (remainingTimeStamp / _hourSecond).floor();
+      remainingTimeStamp -= hours * _hourSecond;
     }
-    if (_timestamp >= 60) {
-      min = (_timestamp / 60).floor();
-      _timestamp -= min * 60;
+    ///Calculate remaining minutes.
+    if (remainingTimeStamp >= _minuteSecond) {
+      min = (remainingTimeStamp / _minuteSecond).floor();
+      remainingTimeStamp -= min * _minuteSecond;
     }
-    sec = _timestamp.toInt();
+    ///Calculate remaining second.
+    sec = remainingTimeStamp.toInt();
     return CurrentRemainingTime(days: days, hours: hours, min: min, sec: sec);
   }
 
-  Duration get currentDuration {
-    return Duration(milliseconds: value);
+  disposeTimer() {
+    _isRunning = false;
+    _countdownTimer?.cancel();
+    _countdownTimer = null;
   }
 
-  ///start
-  start() {
-    if (value <= 0) return;
-    _dispose();
-    Duration duration = _getDuration();
-    if(duration == stepDuration) {
-      _diffTimer = Timer.periodic(stepDuration, (Timer timer) {
-        _diffTime(stepDuration);
-      });
-    } else {
-      Future.delayed(duration, () {
-        _diffTime(duration);
-        _diffTimer = Timer.periodic(stepDuration, (Timer timer) {
-          _diffTime(stepDuration);
-        });
-      });
-    }
+  pauseTimer() {
+    _pause = true;
   }
 
-  _diffTime(Duration duration) {
-    value = max(value - duration.inMilliseconds, 0);
-    _lastTimestamp = DateTime.now().millisecond;
-    if (value <= 0) {
-      stop();
-      return;
-    }
-  }
-
-  ///pause
-  stop() {
-    if (_lastTimestamp != null && value > 0) {
-      _lostTime = DateTime.now().millisecond - _lastTimestamp;
-    }
-    _dispose();
-  }
-
-  Duration _getDuration() {
-    if (_lostTime != null && _lostTime > 0 && _lostTime < 1000) {
-      return Duration(milliseconds: 1000 - _lostTime);
-    }
-    return stepDuration;
+  resumeTimer() {
+    _pause = false;
   }
 
   @override
   void dispose() {
-    _dispose();
+    disposeTimer();
     super.dispose();
-  }
-
-  _dispose() {
-    _diffTimer?.cancel();
-    _diffTimer = null;
   }
 }

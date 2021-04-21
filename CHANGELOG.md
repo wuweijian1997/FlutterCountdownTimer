@@ -1,4 +1,5 @@
-
+## [4.1.0] - 2021/4/21 20:20
+- Add countdown onEnd event.
 ## [4.0.2] - 2021/3/21 11:01
 - Add millisecond animation.
 

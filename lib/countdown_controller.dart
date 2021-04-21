@@ -9,12 +9,16 @@ class CountdownController extends ValueNotifier<int> {
     int? timestamp,
     Duration? duration,
     this.stepDuration = const Duration(milliseconds: 1000),
+    this.onEnd,
   })  : assert((timestamp != null && timestamp > 0) || duration != null),
         super((timestamp ?? duration?.inMilliseconds)!);
   Timer? _diffTimer;
   int? _lastTimestamp;
   int? _lostTime;
   final Duration stepDuration;
+
+  ///Event called after the countdown ends
+  final VoidCallback? onEnd;
 
   bool get isRunning => _diffTimer != null;
 
@@ -28,10 +32,14 @@ class CountdownController extends ValueNotifier<int> {
     if (_timestamp >= 3600) {
       hours = (_timestamp / 3600).floor();
       _timestamp -= hours * 3600;
+    } else if(days != null) {
+      hours = 0;
     }
     if (_timestamp >= 60) {
       min = (_timestamp / 60).floor();
       _timestamp -= min * 60;
+    } else if(hours != null) {
+      min = 0;
     }
     sec = _timestamp.toInt();
     return CurrentRemainingTime(days: days, hours: hours, min: min, sec: sec);
@@ -46,7 +54,7 @@ class CountdownController extends ValueNotifier<int> {
     if (value <= 0) return;
     _dispose();
     Duration duration = _getDuration();
-    if(duration == stepDuration) {
+    if (duration == stepDuration) {
       _diffTimer = Timer.periodic(stepDuration, (Timer timer) {
         _diffTime(stepDuration);
       });
@@ -65,6 +73,7 @@ class CountdownController extends ValueNotifier<int> {
     _lastTimestamp = DateTime.now().millisecond;
     if (value <= 0) {
       stop();
+      onEnd?.call();
       return;
     }
   }

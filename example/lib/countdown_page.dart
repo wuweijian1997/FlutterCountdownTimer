@@ -8,7 +8,9 @@ class CountdownPage extends StatefulWidget {
 
 class _CountdownPageState extends State<CountdownPage> {
   CountdownController countdownController =
-      CountdownController(duration: Duration(minutes: 1));
+      CountdownController(duration: Duration(seconds: 30), onEnd: () {
+        print('onEnd');
+      });
   bool isRunning = false;
   @override
   Widget build(BuildContext context) {
@@ -18,8 +20,8 @@ class _CountdownPageState extends State<CountdownPage> {
             countdownController: countdownController,
             builder: (_, Duration time) {
               return Text(
-                '${time.inSeconds}',
-                style: TextStyle(fontSize: 80),
+                'hours: ${time.inHours} minutes: ${time.inMinutes % 60} seconds: ${time.inSeconds % 60}',
+                style: TextStyle(fontSize: 20),
               );
             }),
       ),

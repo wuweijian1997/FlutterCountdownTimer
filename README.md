@@ -116,6 +116,7 @@ CountdownTimer(
   }
 ```
 ### Using millisecond animation
+```dart
 class _CountdownTimerPageState extends State<CountdownTimerPage>
     with SingleTickerProviderStateMixin {
   late CountdownTimerController controller;
@@ -177,7 +178,7 @@ class _CountdownTimerPageState extends State<CountdownTimerPage>
 }
 ```
 ### In ListView.builder
-```
+```dart
 class ListViewPage extends StatefulWidget {
   static final String rName = "ListView";
 
@@ -237,7 +238,7 @@ class __CountdownDemoState extends State<_CountdownDemo> {
 }
 ```
 ## Countdown
-```
+```dart
 CountdownController countdownController = CountdownController(duration: Duration(minutes: 1));
 
 

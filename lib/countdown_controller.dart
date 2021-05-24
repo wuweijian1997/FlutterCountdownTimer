@@ -11,10 +11,13 @@ class CountdownController extends ValueNotifier<int> {
     this.stepDuration = const Duration(milliseconds: 1000),
     this.onEnd,
   })  : assert((timestamp != null && timestamp > 0) || duration != null),
+        this._originalDuration = duration,
         super((timestamp ?? duration?.inMilliseconds)!);
   Timer? _diffTimer;
   int? _lastTimestamp;
   int? _lostTime;
+  Duration? _originalDuration;
+
   final Duration stepDuration;
 
   ///Event called after the countdown ends
@@ -32,13 +35,13 @@ class CountdownController extends ValueNotifier<int> {
     if (_timestamp >= 3600) {
       hours = (_timestamp / 3600).floor();
       _timestamp -= hours * 3600;
-    } else if(days != null) {
+    } else if (days != null) {
       hours = 0;
     }
     if (_timestamp >= 60) {
       min = (_timestamp / 60).floor();
       _timestamp -= min * 60;
-    } else if(hours != null) {
+    } else if (hours != null) {
       min = 0;
     }
     sec = _timestamp.toInt();
@@ -83,6 +86,11 @@ class CountdownController extends ValueNotifier<int> {
     if (_lastTimestamp != null && value > 0) {
       _lostTime = DateTime.now().millisecond - _lastTimestamp!;
     }
+    _dispose();
+  }
+
+  reset() {
+    value = _originalDuration?.inMilliseconds ?? 0;
     _dispose();
   }
 

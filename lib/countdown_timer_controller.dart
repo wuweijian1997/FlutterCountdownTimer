@@ -8,8 +8,9 @@ class CountdownTimerController extends ChangeNotifier {
   CountdownTimerController(
       {required int endTime, this.onEnd, TickerProvider? vsync})
       : this._endTime = endTime {
-    if(vsync != null) {
-      this._animationController = AnimationController(vsync: vsync, duration: Duration(seconds: 1));
+    if (vsync != null) {
+      this._animationController =
+          AnimationController(vsync: vsync, duration: Duration(seconds: 1));
     }
   }
 
@@ -32,13 +33,13 @@ class CountdownTimerController extends ChangeNotifier {
   Duration intervals = const Duration(seconds: 1);
 
   ///Seconds in a day
-  int _daySecond = 60 * 60 * 24;
+  static const int _daySecond = 60 * 60 * 24;
 
   ///Seconds in an hour
-  int _hourSecond = 60 * 60;
+  static const int _hourSecond = 60 * 60;
 
   ///Seconds in a minute
-  int _minuteSecond = 60;
+  static const int _minuteSecond = 60;
 
   bool get isRunning => _isRunning;
 
@@ -55,9 +56,8 @@ class CountdownTimerController extends ChangeNotifier {
     _isRunning = true;
     _countdownPeriodicEvent();
     if (_isRunning) {
-      _countdownTimer = Timer.periodic(intervals, (timer) {
-        _countdownPeriodicEvent();
-      });
+      _countdownTimer =
+          Timer.periodic(intervals, (_) => _countdownPeriodicEvent());
     }
   }
 
@@ -75,37 +75,42 @@ class CountdownTimerController extends ChangeNotifier {
   ///Calculate current remaining time.
   CurrentRemainingTime? _calculateCurrentRemainingTime() {
     int remainingTimeStamp =
-        ((_endTime - DateTime.now().millisecondsSinceEpoch) / 1000).floor();
+        (_endTime - DateTime.now().millisecondsSinceEpoch) ~/ 1000;
     if (remainingTimeStamp <= 0) {
       return null;
     }
-    int? days, hours, min, sec;
+    int? days, hours, min;
 
     ///Calculate the number of days remaining.
     if (remainingTimeStamp >= _daySecond) {
-      days = (remainingTimeStamp / _daySecond).floor();
-      remainingTimeStamp -= days * _daySecond;
+      days = remainingTimeStamp ~/ _daySecond;
+      remainingTimeStamp %= _daySecond;
     }
 
     ///Calculate remaining hours.
     if (remainingTimeStamp >= _hourSecond) {
-      hours = (remainingTimeStamp / _hourSecond).floor();
-      remainingTimeStamp -= hours * _hourSecond;
+      hours = remainingTimeStamp ~/ _hourSecond;
+      remainingTimeStamp %= _hourSecond;
     } else if (days != null) {
       hours = 0;
     }
 
     ///Calculate remaining minutes.
     if (remainingTimeStamp >= _minuteSecond) {
-      min = (remainingTimeStamp / _minuteSecond).floor();
-      remainingTimeStamp -= min * _minuteSecond;
+      min = remainingTimeStamp ~/ _minuteSecond;
+      remainingTimeStamp %= _minuteSecond;
     } else if (hours != null) {
       min = 0;
     }
 
     ///Calculate remaining second.
-    sec = remainingTimeStamp.toInt();
-    return CurrentRemainingTime(days: days, hours: hours, min: min, sec: sec, milliseconds: _animationController?.view);
+    return CurrentRemainingTime(
+      days: days,
+      hours: hours,
+      min: min,
+      sec: remainingTimeStamp,
+      milliseconds: _animationController?.view,
+    );
   }
 
   disposeTimer() {

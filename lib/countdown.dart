@@ -14,6 +14,7 @@ typedef CountdownWidgetBuilder = Widget Function(
 class Countdown extends StatefulWidget {
   ///controller
   final CountdownController countdownController;
+
   ///custom widget builder
   final CountdownWidgetBuilder builder;
 
@@ -31,24 +32,22 @@ class _CountdownState extends State<Countdown> {
 
   CountdownController get countdownController => widget.countdownController;
 
-  @override
-  void initState() {
-    super.initState();
-    countdownController.addListener(() {
-      setState(() {});
-    });
-  }
-
   Duration get time => countdownController.currentDuration;
 
   @override
-  Widget build(BuildContext context) {
-    return builder.call(context, time);
+  void initState() {
+    super.initState();
+
+    countdownController.addListener(() => setState(() {}));
   }
 
   @override
   void dispose() {
     countdownController.dispose();
+
     super.dispose();
   }
+
+  @override
+  Widget build(BuildContext context) => builder.call(context, time);
 }

@@ -9,14 +9,19 @@ typedef CountdownTimerWidgetBuilder = Widget Function(
 class CountdownTimer extends StatefulWidget {
   ///Widget displayed after the countdown
   final Widget endWidget;
+
   ///Used to customize the countdown style widget
   final CountdownTimerWidgetBuilder? widgetBuilder;
+
   ///Countdown controller, can end the countdown event early
   final CountdownTimerController? controller;
+
   ///Countdown text style
   final TextStyle? textStyle;
+
   ///Event called after the countdown ends
   final VoidCallback? onEnd;
+
   ///The end time of the countdown.
   final int? endTime;
 
@@ -73,7 +78,8 @@ class _CountDownState extends State<CountdownTimer> {
   @override
   void didUpdateWidget(CountdownTimer oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.endTime != widget.endTime || widget.controller != oldWidget.controller) {
+    if (oldWidget.endTime != widget.endTime ||
+        widget.controller != oldWidget.controller) {
       controller.dispose();
       initController();
     }
@@ -89,28 +95,17 @@ class _CountDownState extends State<CountdownTimer> {
     if (time == null) {
       return endWidget;
     }
+
     String value = '';
     if (time.days != null) {
-      var days = _getNumberAddZero(time.days!);
-      value = '$value$days days ';
+      value = '$value${time.days} days ';
     }
-    var hours = _getNumberAddZero(time.hours ?? 0);
-    value = '$value$hours : ';
-    var min = _getNumberAddZero(time.min ?? 0);
-    value = '$value$min : ';
-    var sec = _getNumberAddZero(time.sec ?? 0);
-    value = '$value$sec';
+
     return Text(
-      value,
+      '$value${_padZero(time.hours)} : ${_padZero(time.min)} : ${_padZero(time.sec)}',
       style: textStyle,
     );
   }
 
-  /// 1 -> 01
-  String _getNumberAddZero(int number) {
-    if (number < 10) {
-      return "0" + number.toString();
-    }
-    return number.toString();
-  }
+  String _padZero(int? number) => (number ?? 0).toString().padLeft(2, '0');
 }

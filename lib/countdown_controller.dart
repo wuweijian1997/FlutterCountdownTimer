@@ -24,24 +24,24 @@ class CountdownController extends ValueNotifier<int> {
 
   CurrentRemainingTime get currentRemainingTime {
     int? days, hours, min, sec;
-    int _timestamp = (value / 1000).floor();
+    int _timestamp = value ~/ 1000;
     if (value >= 86400) {
-      days = (_timestamp / 86400).floor();
-      _timestamp -= days * 86400;
+      days = _timestamp ~/ 86400;
+      _timestamp %= 86400;
     }
     if (_timestamp >= 3600) {
-      hours = (_timestamp / 3600).floor();
-      _timestamp -= hours * 3600;
-    } else if(days != null) {
+      hours = _timestamp ~/ 3600;
+      _timestamp %= 3600;
+    } else if (days != null) {
       hours = 0;
     }
     if (_timestamp >= 60) {
-      min = (_timestamp / 60).floor();
-      _timestamp -= min * 60;
-    } else if(hours != null) {
+      min = _timestamp ~/ 60;
+      _timestamp %= 60;
+    } else if (hours != null) {
       min = 0;
     }
-    sec = _timestamp.toInt();
+    sec = _timestamp;
     return CurrentRemainingTime(days: days, hours: hours, min: min, sec: sec);
   }
 

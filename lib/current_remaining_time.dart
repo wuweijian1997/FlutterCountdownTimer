@@ -7,10 +7,15 @@ class CurrentRemainingTime {
   final int? sec;
   final Animation<double>? milliseconds;
 
-  CurrentRemainingTime({this.days, this.hours, this.min, this.sec, this.milliseconds});
+  CurrentRemainingTime({
+    this.days,
+    this.hours,
+    this.min,
+    this.sec,
+    this.milliseconds,
+  });
 
   @override
-  String toString() {
-    return 'CurrentRemainingTime{days: $days, hours: $hours, min: $min, sec: $sec, milliseconds: ${milliseconds?.value}';
-  }
+  String toString() =>
+      'CurrentRemainingTime{days: $days, hours: $hours, min: $min, sec: $sec, milliseconds: ${milliseconds?.value}';
 }

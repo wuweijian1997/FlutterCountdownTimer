@@ -6,8 +6,7 @@ class CountdownTimerPage extends StatefulWidget {
   _CountdownTimerPageState createState() => _CountdownTimerPageState();
 }
 
-class _CountdownTimerPageState extends State<CountdownTimerPage>
-    with SingleTickerProviderStateMixin {
+class _CountdownTimerPageState extends State<CountdownTimerPage> {
   late CountdownTimerController controller;
   int endTime = DateTime.now().millisecondsSinceEpoch +
       Duration(seconds: 30).inMilliseconds;
@@ -16,7 +15,7 @@ class _CountdownTimerPageState extends State<CountdownTimerPage>
   void initState() {
     super.initState();
     controller =
-        CountdownTimerController(endTime: endTime, onEnd: onEnd, vsync: this);
+        CountdownTimerController(endTime: endTime, onEnd: onEnd);
   }
 
   void onEnd() {

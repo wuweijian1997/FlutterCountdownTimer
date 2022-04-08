@@ -39,7 +39,7 @@ class CountdownTimer extends StatefulWidget {
       this.endTime,
       this.onEnd,
       this.startTime})
-      : assert(endTime != null || controller != null),
+      : assert(endTime != null || controller != null || startTime != null),
         super(key: key);
 
   @override
@@ -86,7 +86,8 @@ class _CountDownState extends State<CountdownTimer> {
   void didUpdateWidget(CountdownTimer oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.endTime != widget.endTime ||
-        widget.controller != oldWidget.controller) {
+        widget.controller != oldWidget.controller ||
+        widget.startTime == oldWidget.startTime) {
       controller.dispose();
       initController();
     }

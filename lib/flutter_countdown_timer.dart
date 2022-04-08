@@ -69,9 +69,9 @@ class _CountDownState extends State<CountdownTimer> {
   initController() {
     controller = widget.controller ??
         CountdownTimerController(
-            endTime: widget.endTime!,
+            endTime: widget.endTime,
             onEnd: widget.onEnd,
-            startTime: widget.startTime!);
+            startTime: widget.startTime);
     if (controller.isRunning == false) {
       controller.start();
     }

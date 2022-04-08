@@ -14,8 +14,8 @@ class _CountdownTimerPageState extends State<CountdownTimerPage> {
   @override
   void initState() {
     super.initState();
-    controller =
-        CountdownTimerController(endTime: endTime, onEnd: onEnd);
+    controller = CountdownTimerController(
+        endTime: endTime, onEnd: onEnd, startTime: null);
   }
 
   void onEnd() {
@@ -92,7 +92,8 @@ class _CountdownTimerPageState extends State<CountdownTimerPage> {
                     AnimatedBuilder(
                       animation: time.milliseconds!,
                       builder: (context, child) {
-                        return Text("${(time.milliseconds!.value * 1000).toInt()}");
+                        return Text(
+                            "${(time.milliseconds!.value * 1000).toInt()}");
                       },
                     )
                   ],

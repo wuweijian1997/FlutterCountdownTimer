@@ -83,9 +83,11 @@ class CountdownTimerController extends ChangeNotifier {
   CurrentRemainingTime? _calculateCurrentRemainingTime() {
     int remainingTimeStamp = 0;
     if (_endTime != null)
-      (_endTime! - DateTime.now().millisecondsSinceEpoch) ~/ 1000;
+      remainingTimeStamp =
+          (_endTime! - DateTime.now().millisecondsSinceEpoch) ~/ 1000;
     else
-      (DateTime.now().millisecondsSinceEpoch - _startTime!) ~/ 1000;
+      remainingTimeStamp =
+          (DateTime.now().millisecondsSinceEpoch - _startTime!) ~/ 1000;
 
     if (remainingTimeStamp <= 0) {
       return null;

@@ -25,17 +25,21 @@ class CountdownTimer extends StatefulWidget {
   ///The end time of the countdown.
   final int? endTime;
 
-  CountdownTimer({
-    Key? key,
-    this.endWidget = const Center(
-      child: Text('The current time has expired'),
-    ),
-    this.widgetBuilder,
-    this.controller,
-    this.textStyle,
-    this.endTime,
-    this.onEnd,
-  })  : assert(endTime != null || controller != null),
+  ///The end time of the countdown.
+  final int? startTime;
+
+  CountdownTimer(
+      {Key? key,
+      this.endWidget = const Center(
+        child: Text('The current time has expired'),
+      ),
+      this.widgetBuilder,
+      this.controller,
+      this.textStyle,
+      this.endTime,
+      this.onEnd,
+      this.startTime})
+      : assert(endTime != null || controller != null || startTime != null),
         super(key: key);
 
   @override
@@ -64,7 +68,10 @@ class _CountDownState extends State<CountdownTimer> {
   ///Generate countdown controller.
   initController() {
     controller = widget.controller ??
-        CountdownTimerController(endTime: widget.endTime!, onEnd: widget.onEnd);
+        CountdownTimerController(
+            endTime: widget.endTime,
+            onEnd: widget.onEnd,
+            startTime: widget.startTime);
     if (controller.isRunning == false) {
       controller.start();
     }
@@ -79,7 +86,8 @@ class _CountDownState extends State<CountdownTimer> {
   void didUpdateWidget(CountdownTimer oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.endTime != widget.endTime ||
-        widget.controller != oldWidget.controller) {
+        widget.controller != oldWidget.controller ||
+        widget.startTime == oldWidget.startTime) {
       controller.dispose();
       initController();
     }
